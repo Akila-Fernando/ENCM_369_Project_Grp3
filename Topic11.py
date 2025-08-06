@@ -1,5 +1,6 @@
+# CPU Scheduling Simulations with Gantt Charts and Metrics
+
 import matplotlib.pyplot as plt
-import numpy as np
 
 # Gantt Chart Plotter
 def plot_gantt_chart(processes, title):
@@ -16,15 +17,12 @@ def plot_gantt_chart(processes, title):
     plt.tight_layout()
     plt.show()
 
-
 # Scheduling Simulations
 def get_all_algorithms_gantt_data():
     all_data = {}
 
     # FCFS
-    processes_fcfs = [{'id': 'P1', 'arrival': 0, 'burst': 5},
-                      {'id': 'P2', 'arrival': 1, 'burst': 3},
-                      {'id': 'P3', 'arrival': 2, 'burst': 8}]
+    processes_fcfs = [{'id': f'P{i+1}', 'arrival': i % 4, 'burst': (i * 3) % 10 + 1} for i in range(13)]
     time = 0
     for p in processes_fcfs:
         p['start'] = max(time, p['arrival'])
@@ -32,10 +30,7 @@ def get_all_algorithms_gantt_data():
     all_data["FCFS"] = processes_fcfs
 
     # SJF Non-preemptive
-    processes_sjf = [{'id': 'P1', 'arrival': 0, 'burst': 6},
-                     {'id': 'P2', 'arrival': 1, 'burst': 8},
-                     {'id': 'P3', 'arrival': 2, 'burst': 7},
-                     {'id': 'P4', 'arrival': 3, 'burst': 3}]
+    processes_sjf = [{'id': f'P{i+1}', 'arrival': i % 4, 'burst': (13 - i) % 10 + 1} for i in range(13)]
     time = 0
     completed = []
     ready_queue = []
@@ -52,10 +47,8 @@ def get_all_algorithms_gantt_data():
     all_data["SJF"] = completed
 
     # Round Robin
-    rr_processes = [{'id': 'P1', 'arrival': 0, 'burst': 5},
-                    {'id': 'P2', 'arrival': 1, 'burst': 3},
-                    {'id': 'P3', 'arrival': 2, 'burst': 8}]
-    quantum = 2
+    rr_processes = [{'id': f'P{i+1}', 'arrival': i % 3, 'burst': (i * 2) % 9 + 1} for i in range(13)]
+    quantum = 3
     remaining = {p['id']: p['burst'] for p in rr_processes}
     arrival_map = {p['id']: p['arrival'] for p in rr_processes}
     time = 0
@@ -87,11 +80,7 @@ def get_all_algorithms_gantt_data():
     all_data["Round Robin"] = gantt
 
     # Priority Scheduling
-    processes_priority = [{'id': 'P1', 'burst': 10, 'priority': 3},
-                          {'id': 'P2', 'burst': 1, 'priority': 1},
-                          {'id': 'P3', 'burst': 2, 'priority': 4},
-                          {'id': 'P4', 'burst': 1, 'priority': 5},
-                          {'id': 'P5', 'burst': 5, 'priority': 2}]
+    processes_priority = [{'id': f'P{i+1}', 'burst': (i * 4) % 10 + 1, 'priority': (i * 7) % 10 + 1} for i in range(13)]
     processes_priority.sort(key=lambda x: x['priority'])
     time = 0
     for p in processes_priority:
