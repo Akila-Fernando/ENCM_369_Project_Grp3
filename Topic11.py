@@ -1,13 +1,14 @@
-# CPU Scheduling Simulations with Gantt Charts and Metrics
-
 import matplotlib.pyplot as plt
 
 # Gantt Chart Plotter
 def plot_gantt_chart(processes, title):
     fig, ax = plt.subplots(figsize=(10, 2))
     y = 0
-    for p in processes:
-        ax.broken_barh([(p['start'], p['burst'])], (y, 1), facecolors='tab:blue')
+    colors = ['tab:blue', 'tab:orange']
+
+    for idx, p in enumerate(processes):
+        color = colors[idx % len(colors)] 
+        ax.broken_barh([(p['start'], p['burst'])], (y, 1), facecolors=color)
         ax.text(p['start'] + p['burst'] / 2, y + 0.5, p['id'], ha='center', va='center', color='white')
     ax.set_ylim(0, 1)
     ax.set_xlim(0, max(p['start'] + p['burst'] for p in processes))
